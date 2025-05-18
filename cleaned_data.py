@@ -16,3 +16,5 @@ for file in csv_files:
     common_cols = set(pd.read_csv(csv_files[0], nrows=0).columns)
 for file in csv_files[1:]:
     common_cols &= set(pd.read_csv(file, nrows=0).columns)
+
+print(df.isnull().sum())
