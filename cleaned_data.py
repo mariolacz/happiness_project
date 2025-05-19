@@ -17,4 +17,6 @@ for file in csv_files:
 for file in csv_files[1:]:
     common_cols &= set(pd.read_csv(file, nrows=0).columns)
 
+df = df.rename(columns={'Country or region': 'Country'})
+df = df.round(2)
 print(df.isnull().sum())
