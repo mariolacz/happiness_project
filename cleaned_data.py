@@ -27,9 +27,8 @@ for file in csv_files:
 # csv's connection
 df = pd.concat(df_list, ignore_index=True)
 
-
 df = df.rename(columns={'Country or region': 'Country'})
-df = df.round(2)
+df['Year'] = df['Year'].astype(int)
 
 print("\nMissing values:")
 print(df.isnull().sum())
@@ -38,6 +37,6 @@ print(df.isnull().sum())
 output_folder = '/Users/mariolaczajkowska/happiness_data/new_data'
 os.makedirs(output_folder, exist_ok=True)
 output_file = os.path.join(output_folder, 'happiness_cleaned.csv')
-df.to_csv(output_file, index=False)
+df.to_csv(output_file, index=True)
 
-print(f"\nleaned data saved to: {output_file}")
+print(f"\nCleaned data saved to: {output_file}")
