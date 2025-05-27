@@ -20,8 +20,6 @@ with tab1:
     st.write("Filtered Data", filtered_df)
 
 with tab2:
-    st.title("Charts")
-
     if 'Score' in filtered_df.columns:
         #av score by country 
         avg_scores = filtered_df.groupby("Country")["Score"].mean().reset_index()
@@ -31,3 +29,15 @@ with tab2:
         st.plotly_chart(fig_bar)
     else:
         st.warning("No 'Score' column found in the dataset.")
+
+    if len(selected_year) == 1:
+        year_df = filtered_df[filtered_df['Year'] == selected_year[0]]
+        top_10 = year_df.sort_values(by="Score", ascending=False).head(10)
+        fig_bar = px.bar(top_10, 
+                        x="Score", 
+                        y="Country", 
+                        orientation="h", 
+                        title=f"Top 10 happiest countries in {selected_year[0]}")
+        st.plotly_chart(fig_bar, use_container_width=True)
+    else:
+        st.info("Select a single year to view top 10 countries.")
