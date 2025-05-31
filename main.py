@@ -4,7 +4,7 @@ import plotly.express as px
 
 # Load data
 df = pd.read_csv('/Users/mariolaczajkowska/happiness_data/new_data/happiness_cleaned.csv', sep = ';')
-df['Year'] = df['Year'].astype(int)
+#df['Year'] = df['Year'].astype(int)
 
 st.sidebar.header("Filters")
 selected_country = st.sidebar.multiselect("Select Country:", options=df['Country'].unique(), default=df['Country'].unique())
@@ -19,6 +19,7 @@ tab1, tab2 = st.tabs(["Filtered Data", "Charts"])
 with tab1:
     st.write("Filtered Data", filtered_df)
 
+#tab 2 charts
 with tab2:
     if 'Score' in filtered_df.columns:
         #av score by country 
@@ -29,6 +30,15 @@ with tab2:
         st.plotly_chart(fig_bar)
     else:
         st.warning("No 'Score' column found in the dataset.")
+
+
+    if 'Score' in filtered_df.columns and len(selected_year) > 1:
+        avg_yearly = filtered_df.groupby("Year")["Score"].mean().reset_index()
+        fig_line = px.line(avg_yearly, x="Year", y="Score",
+                           markers=True,
+                           title="Average global happiness score over time",
+                           labels={"Score": "Average Score", "Year": "Year"})
+        st.plotly_chart(fig_line, use_container_width=True)
 
     if len(selected_year) == 1:
         year_df = filtered_df[filtered_df['Year'] == selected_year[0]]
